@@ -8,6 +8,8 @@ A drop-in replacement for [komarev.com/ghpvc](https://komarev.com) — except yo
 the URL, you own the data, and there's no third-party service that can go down
 on a random Tuesday.
 
+### 🌐 Live demo — [**counter.othmaro.dev**](https://counter.othmaro.dev)
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fothmarodev%2Fprofile-counter&env=UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN&envDescription=Upstash%20Redis%20REST%20credentials%20%E2%80%94%20free%20tier%2C%20signup%20at%20console.upstash.com&envLink=https%3A%2F%2Fgithub.com%2Fothmarodev%2Fprofile-counter%23setup&project-name=profile-counter&repository-name=profile-counter)
 
 ![MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
