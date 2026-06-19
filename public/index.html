@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>profile-counter — your own GitHub profile views counter</title>
+<meta name="description" content="Self-hosted GitHub profile views counter. Free forever, can't break. A drop-in replacement for komarev.com/ghpvc that you own end-to-end." />
+<meta property="og:title" content="profile-counter — your own GitHub profile views counter" />
+<meta property="og:description" content="Self-hosted, open source, drop-in komarev replacement. You own the URL, you own the data." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://counter.othmaro.dev" />
+<link rel="canonical" href="https://counter.othmaro.dev" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-elev: #111315;
+    --bg-card: #161a1f;
+    --border: #1f2937;
+    --text: #f5f5f5;
+    --text-muted: #9ca3af;
+    --text-dim: #6b7280;
+    --accent: #FF6B35;
+    --accent-soft: rgba(255, 107, 53, 0.1);
+    --success: #4c1;
+    --purple: #8a2be2;
+    --blue: #007ec6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
+  }
+
+  /* Header */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 4rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+  }
+  .logo-mark {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, var(--accent), #ff9367);
+    display: grid; place-items: center;
+    color: white;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+  }
+  .nav-right {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .nav-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    transition: all .15s ease;
+  }
+  .nav-link:hover { color: var(--text); background: var(--bg-card); }
+
+  /* Hero */
+  .hero {
+    margin-bottom: 4rem;
+  }
+  .badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .badge-pill::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .subtitle {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    max-width: 580px;
+    margin-bottom: 2rem;
+  }
+  .cta-row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.3rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid transparent;
+    transition: all .15s ease;
+  }
+  .btn-primary {
+    background: var(--text);
+    color: var(--bg);
+  }
+  .btn-primary:hover { background: white; transform: translateY(-1px); }
+  .btn-secondary {
+    background: var(--bg-card);
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .btn-secondary:hover { background: var(--bg-elev); border-color: #2d3748; }
+
+  /* Live counter card */
+  .live-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+  .live-card-label {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+  .live-card img {
+    height: 32px;
+    image-rendering: -webkit-optimize-contrast;
+  }
+  .live-card-note {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  /* Sections */
+  section {
+    margin-bottom: 3rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* Badge gallery */
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .gallery-row {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .gallery-badge img {
+    height: 24px;
+    vertical-align: middle;
+  }
+  .gallery-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    background: var(--bg);
+    padding: 0.35rem 0.7rem;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+
+  /* Code block */
+  .code {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem 1.3rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text);
+    overflow-x: auto;
+    line-height: 1.7;
+  }
+  .code .comment { color: var(--text-dim); }
+  .code .var { color: var(--accent); }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding-top: 2rem;
+    margin-top: 4rem;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  footer a:hover { color: var(--text); }
+
+  /* Tiny helpers */
+  .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+  .text-muted { color: var(--text-muted); }
+  .text-dim { color: var(--text-dim); }
+
+  @media (max-width: 540px) {
+    .wrap { padding: 2rem 1.25rem 4rem; }
+    header { margin-bottom: 2.5rem; }
+    .nav-link { font-size: 0.85rem; padding: 0.35rem 0.6rem; }
+    .gallery-row { flex-direction: column; align-items: flex-start; }
+    .gallery-code { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="logo">
+      <div class="logo-mark">pc</div>
+      <span>profile-counter</span>
+    </div>
+    <nav class="nav-right">
+      <a class="nav-link" href="https://github.com/othmarodev/profile-counter#readme">Docs</a>
+      <a class="nav-link" href="https://github.com/othmarodev/profile-counter">GitHub</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="badge-pill">Live demo</div>
+    <h1>Your own GitHub profile views counter.<br />Free forever. Can&rsquo;t break.</h1>
+    <p class="subtitle">
+      A drop-in replacement for komarev.com/ghpvc &mdash; except you own the URL,
+      you own the data, and there&rsquo;s no third-party service that can go down
+      on a random Tuesday.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fothmarodev%2Fprofile-counter&env=UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN&envDescription=Upstash%20Redis%20REST%20credentials%20%E2%80%94%20free%20tier%2C%20signup%20at%20console.upstash.com&envLink=https%3A%2F%2Fgithub.com%2Fothmarodev%2Fprofile-counter%23setup&project-name=profile-counter&repository-name=profile-counter">
+        Deploy with Vercel →
+      </a>
+      <a class="btn btn-secondary" href="https://github.com/othmarodev/profile-counter">
+        Star on GitHub
+      </a>
+    </div>
+  </section>
+
+  <div class="live-card">
+    <div class="live-card-label">This badge counts up every time you reload this page</div>
+    <img
+      src="/api/views?id=demo&label=Live%20demo%20views&rightColor=FF6B35"
+      alt="Live demo views"
+      width="180"
+      height="32"
+    />
+    <div class="live-card-note">
+      Rendered by <span class="mono">/api/views?id=demo</span> &mdash; the same Edge function the project ships.
+    </div>
+  </div>
+
+  <section>
+    <h2>Pick a style. Copy the markdown. Done.</h2>
+    <div class="gallery">
+
+      <div class="gallery-row">
+        <div class="gallery-badge">
+          <img src="/api/views?id=showcase-default&label=Profile%20views" alt="default style" />
+        </div>
+        <div class="gallery-code">/api/views?id=YOUR_NAME</div>
+      </div>
+
+      <div class="gallery-row">
+        <div class="gallery-badge">
+          <img src="/api/views?id=showcase-blueviolet&label=Profile%20views&rightColor=blueviolet" alt="blueviolet" />
+        </div>
+        <div class="gallery-code">&amp;rightColor=blueviolet</div>
+      </div>
+
+      <div class="gallery-row">
+        <div class="gallery-badge">
+          <img src="/api/views?id=showcase-brand&label=Page%20views&leftColor=1F2937&rightColor=FF6B35" alt="brand orange" />
+        </div>
+        <div class="gallery-code">&amp;leftColor=1F2937&amp;rightColor=FF6B35</div>
+      </div>
+
+      <div class="gallery-row">
+        <div class="gallery-badge">
+          <img src="/api/views?id=showcase-flat-square&label=Visitors&rightColor=blue&style=flat-square" alt="flat-square blue" />
+        </div>
+        <div class="gallery-code">&amp;style=flat-square&amp;rightColor=blue</div>
+      </div>
+
+      <div class="gallery-row">
+        <div class="gallery-badge">
+          <img src="/api/views?id=showcase-green&label=Hits&rightColor=4c1" alt="bright green" />
+        </div>
+        <div class="gallery-code">&amp;label=Hits&amp;rightColor=4c1</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>How to use it in your README</h2>
+    <div class="code"><span class="comment">&lt;!-- Once you deploy your own instance, swap YOUR_USERNAME and the host. --&gt;</span>
+![Profile views](https://<span class="var">your-project</span>.vercel.app/api/views?id=<span class="var">YOUR_USERNAME</span>)</div>
+  </section>
+
+  <section>
+    <h2>Why a self-hosted counter?</h2>
+    <p class="text-muted">
+      Every public counter service eventually goes down, gets rate-limited or
+      disappears. When that happens, your historical count resets to zero and
+      your profile shows a broken image. <strong style="color: var(--text)">profile-counter</strong>
+      runs on your own Vercel + Upstash &mdash; both free tiers &mdash; so the
+      only person who can break it is you. Source code is MIT, ~300 lines of
+      JavaScript, no shields.io dependency.
+    </p>
+  </section>
+
+  <section>
+    <h2>What you get</h2>
+    <ul class="text-muted" style="list-style: none; display: grid; gap: 0.6rem;">
+      <li>&#10003; Vercel Edge Function, sub-100ms cold start</li>
+      <li>&#10003; Atomic <span class="mono">INCR</span> on Upstash Redis &mdash; concurrent visits never lose a count</li>
+      <li>&#10003; Migration script to seed your old komarev count</li>
+      <li>&#10003; Track multiple pages with <span class="mono">?id=</span> &mdash; one deploy, infinite counters</li>
+      <li>&#10003; Two badge styles (<span class="mono">flat</span>, <span class="mono">flat-square</span>) &mdash; no shields.io needed</li>
+      <li>&#10003; MIT, ~300 lines, fork-friendly</li>
+    </ul>
+  </section>
+
+  <footer>
+    <div>
+      Built by <a href="https://othmaro.dev">@othmarodev</a> &middot;
+      <a href="https://github.com/othmarodev/profile-counter">source</a> &middot;
+      <a href="https://github.com/othmarodev/profile-counter/blob/main/LICENSE">MIT</a>
+    </div>
+    <div>
+      <a href="https://github.com/othmarodev/profile-counter#troubleshooting">Troubleshooting</a> &middot;
+      <a href="https://github.com/othmarodev/profile-counter/issues">Issues</a>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

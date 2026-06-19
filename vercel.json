@@ -2,7 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "rewrites": [
-    { "source": "/", "destination": "/api/views" },
     { "source": "/views", "destination": "/api/views" },
     { "source": "/views.svg", "destination": "/api/views" }
   ],

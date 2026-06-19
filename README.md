@@ -43,11 +43,12 @@ If it ever breaks, it's because **you** broke it. And you can fix it.
 
 ## Live demo
 
-[![Profile views](https://counter.othmaro.dev/api/views?id=demo&label=Live%20demo%20views&rightColor=FF6B35)](https://counter.othmaro.dev/api/views?id=demo)
+[![Profile views](https://counter.othmaro.dev/api/views?id=demo&label=Live%20demo%20views&rightColor=FF6B35)](https://counter.othmaro.dev)
 
 That badge above is rendered by **this exact code**, deployed to
-[counter.othmaro.dev](https://counter.othmaro.dev). Every time you reload this
-README, it counts up.
+**[counter.othmaro.dev](https://counter.othmaro.dev)** — go play with the
+demo (style examples, color presets, the live counter). Every time you reload
+this README, the badge above counts up.
 
 ## Prerequisites
 
