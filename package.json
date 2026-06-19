@@ -1,0 +1,45 @@
+{
+  "name": "profile-counter",
+  "version": "1.0.0",
+  "description": "Self-hosted GitHub profile views counter. Your own counter, free forever, never breaks. A drop-in replacement for komarev.com/ghpvc/.",
+  "type": "module",
+  "private": false,
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod",
+    "seed": "node scripts/seed.js",
+    "test:render": "node scripts/render-preview.js"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.34.3"
+  },
+  "keywords": [
+    "github",
+    "profile",
+    "counter",
+    "views",
+    "visitor",
+    "badge",
+    "shields",
+    "komarev",
+    "alternative",
+    "self-hosted",
+    "vercel",
+    "upstash",
+    "edge-function",
+    "serverless"
+  ],
+  "author": "Othmaro Fallas Rojas <othmaro@othmaro.dev> (https://othmaro.dev)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/othmarodev/profile-counter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/othmarodev/profile-counter/issues"
+  },
+  "homepage": "https://github.com/othmarodev/profile-counter#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

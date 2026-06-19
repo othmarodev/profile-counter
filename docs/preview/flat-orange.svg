@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="108" height="20" role="img" aria-label="Page views: 420">
+  <title>Page views: 420</title>
+  <linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <clipPath id="r"><rect width="108" height="20" rx="3" fill="#fff"/></clipPath>
+  <g clip-path="url(#r)">
+    <rect width="76" height="20" fill="#1F2937"/>
+    <rect x="76" width="32" height="20" fill="#FF6B35"/>
+    <rect width="108" height="20" fill="url(#s)"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">
+    <text x="38" y="14" fill="#010101" fill-opacity=".3">Page views</text>
+    <text x="38" y="13">Page views</text>
+    <text x="92" y="14" fill="#010101" fill-opacity=".3">420</text>
+    <text x="92" y="13">420</text>
+  </g>
+</svg>
